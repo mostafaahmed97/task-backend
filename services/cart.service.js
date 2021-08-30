@@ -31,6 +31,17 @@ const removeFromCart = (cartItemId) => {
   });
 };
 
+const clearCart = (cartId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await models.cartitem.destroy({ where: { cartId } });
+      resolve();
+    } catch (e) {
+      reject({ status: 500, message: e });
+    }
+  });
+};
+
 const updateCartItem = (userId, productData) => {};
 
 module.exports = {
@@ -38,4 +49,5 @@ module.exports = {
   addToCart,
   removeFromCart,
   updateCartItem,
+  clearCart,
 };

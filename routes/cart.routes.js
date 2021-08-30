@@ -15,6 +15,15 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.delete("/all", getUserCartId, async (req, res) => {
+  try {
+    await CartService.clearCart(req.userData.cartId);
+    res.status(200).send();
+  } catch (e) {
+    res.status(e.status).send(e.message);
+  }
+});
+
 router.delete("/:cartItemId", checkItemOwnership, async (req, res) => {
   try {
     await CartService.removeFromCart(req.params.cartItemId);
