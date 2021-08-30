@@ -18,7 +18,7 @@ const getCartItems = async (userId) => {
   });
 };
 
-const addToCart = (userId, productData) => {};
+const addToCart = (cartId, productId) => {};
 
 const removeFromCart = (cartItemId) => {
   return new Promise(async (resolve, reject) => {

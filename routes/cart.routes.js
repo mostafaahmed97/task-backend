@@ -1,7 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const CartService = require("../services/cart.service");
-const { checkItemOwnership } = require("../middleware/cart.middleware");
+const {
+  checkItemOwnership,
+  getUserCartId,
+} = require("../middleware/cart.middleware");
 
 router.get("/", async (req, res) => {
   try {
@@ -19,6 +22,11 @@ router.delete("/:cartItemId", checkItemOwnership, async (req, res) => {
   } catch (e) {
     res.status(e.status).send(e.message);
   }
+});
+
+router.post("/", getUserCartId, async (req, res) => {
+  console.log(req.userData);
+  res.status(200).json();
 });
 
 module.exports = router;

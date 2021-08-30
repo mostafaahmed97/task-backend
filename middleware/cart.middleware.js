@@ -8,7 +8,7 @@ const checkItemOwnership = async (req, res, next) => {
     var cartItem = await models.cartitem.findOne({ where: { id: cartItemId } });
     if (!cartItem) return res.status(404).send({ error: "No item to delete" });
     var userCart = await models.cart.findOne({
-      where: { id: req.userData.id },
+      where: { userId: req.userData.id },
     });
     var cartId = userCart.id;
     if (cartId != cartItem.cartId) return res.status(403).send();
@@ -19,4 +19,17 @@ const checkItemOwnership = async (req, res, next) => {
   }
 };
 
-module.exports = { checkItemOwnership };
+const getUserCartId = async (req, res, next) => {
+  try {
+    var userCart = await models.cart.findOne({
+      where: { userId: req.userData.id },
+    });
+    req.userData.cartId = userCart.id;
+    next();
+  } catch (e) {
+    console.log(e);
+    res.status(500).send({ error: "Internal server error" });
+  }
+};
+
+module.exports = { checkItemOwnership, getUserCartId };
