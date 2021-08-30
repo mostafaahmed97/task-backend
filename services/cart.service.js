@@ -20,7 +20,16 @@ const getCartItems = async (userId) => {
 
 const addToCart = (userId, productData) => {};
 
-const removeFromCart = (userId, cartItemId) => {};
+const removeFromCart = (cartItemId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await models.cartitem.destroy({ where: { id: cartItemId } });
+      resolve();
+    } catch (e) {
+      reject({ status: 500, message: e });
+    }
+  });
+};
 
 const updateCartItem = (userId, productData) => {};
 

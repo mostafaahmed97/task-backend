@@ -13,7 +13,12 @@ router.get("/", async (req, res) => {
 });
 
 router.delete("/:cartItemId", checkItemOwnership, async (req, res) => {
-  res.send(req.params.cartItemId);
+  try {
+    await CartService.removeFromCart(req.params.cartItemId);
+    res.status(200).send();
+  } catch (e) {
+    res.status(e.status).send(e.message);
+  }
 });
 
 module.exports = router;
