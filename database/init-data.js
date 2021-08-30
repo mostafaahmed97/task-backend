@@ -39,6 +39,15 @@ const initProducts = [
   },
 ];
 
+const cartItems = [
+  { cartId: 1, prodId: 1 },
+  { cartId: 1, prodId: 2 },
+  { cartId: 1, prodId: 3 },
+  { cartId: 2, prodId: 1 },
+  { cartId: 2, prodId: 3 },
+  { cartId: 3, prodId: 1 },
+];
+
 async function initData(db) {
   const { models } = db;
   try {
@@ -49,6 +58,15 @@ async function initData(db) {
 
     for (var product of initProducts) {
       await models.product.create(product);
+    }
+
+    for (var item of cartItems) {
+      let cartItem = await models.cartitem.build({
+        cartId: item.cartId,
+        productId: item.prodId,
+      });
+
+      await cartItem.save();
     }
   } catch (e) {
     console.log(e);

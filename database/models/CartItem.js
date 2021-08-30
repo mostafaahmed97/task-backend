@@ -12,6 +12,7 @@ module.exports = (db) => {
     quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: 1,
     },
   });
 };
