@@ -4,13 +4,19 @@
 // Models will then be accessible from the db instance
 const { Sequelize } = require("sequelize");
 const applyRelations = require("./apply-realtions");
-const modelDefiners = [require("./models/Product")];
+const modelDefiners = [
+  require("./models/Product"),
+  require("./models/User"),
+  require("./models/Cart"),
+  require("./models/CartItem"),
+];
 
 // Initializes sequelize instace
 const db = new Sequelize("task-db", "root", "", {
   host: "localhost",
   dialect: "mysql",
   operatorAliases: false,
+  logging: false,
   pool: {
     max: 5,
     min: 0,
