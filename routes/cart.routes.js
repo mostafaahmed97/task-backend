@@ -37,11 +37,20 @@ router.post("/", getUserCartId, async (req, res) => {
   try {
     if (!req.body.productId)
       throw { status: 400, message: "Cannot add to cart" };
-    let addedProduct = await CartService.addToCart(
+    let addedItem = await CartService.addToCart(
       req.userData.cartId,
       req.body.productId
     );
-    res.status(200).json(addedProduct);
+    res.status(200).json(addedItem);
+  } catch (e) {
+    res.status(e.status).send(e.message);
+  }
+});
+
+router.patch("/:cartItemId", checkItemOwnership, async (req, res) => {
+  try {
+    await CartService.updateCartItem(req.params.cartItemId, req.body.quantity);
+    res.status(201).send();
   } catch (e) {
     res.status(e.status).send(e.message);
   }

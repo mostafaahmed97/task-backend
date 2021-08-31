@@ -72,7 +72,27 @@ const clearCart = (cartId) => {
   });
 };
 
-const updateCartItem = (userId, productData) => {};
+const updateCartItem = (cartItemId, quantity) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (quantity < 1 || !quantity)
+        throw { status: 500, message: "Invalid quantity" };
+
+      let cartItem = await models.cartitem.findOne({
+        where: { id: cartItemId },
+        include: [models.product],
+      });
+
+      if (quantity > cartItem.product.available_quantity)
+        throw { status: 500, message: "Invalid quantity" };
+
+      await cartItem.update({ quantity });
+      resolve();
+    } catch (e) {
+      reject({ status: e.status, message: e.message });
+    }
+  });
+};
 
 module.exports = {
   getCartItems,
