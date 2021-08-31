@@ -7,6 +7,9 @@ function applyRelations(db) {
   models.cart.hasMany(models.cartitem, { onDelete: "cascade" });
   models.cartitem.belongsTo(models.cart);
 
+  models.coupon.hasMany(models.cart, { onDelete: "set null" });
+  models.cart.belongsTo(models.coupon);
+
   models.product.hasMany(models.cartitem, { onDelete: "cascade" });
   models.cartitem.belongsTo(models.product);
 }

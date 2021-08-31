@@ -9,6 +9,7 @@ const modelDefiners = [
   require("./models/User"),
   require("./models/Cart"),
   require("./models/CartItem"),
+  require("./models/Coupon"),
 ];
 
 // Initializes sequelize instace

@@ -48,6 +48,30 @@ const cartItems = [
   { cartId: 3, prodId: 1 },
 ];
 
+const coupons = [
+  {
+    code: "SUMMER15",
+    type: "fixed",
+    amount: 15,
+    start_date: "2021-8-1",
+    end_date: "2021-10-1",
+  },
+  {
+    code: "SCHOOLBREAK",
+    type: "percent",
+    amount: 15,
+    start_date: "2021-9-15",
+    end_date: "2021-10-1",
+  },
+  {
+    code: "WINTER30",
+    type: "percent",
+    amount: 30,
+    start_date: "2021-7-1",
+    end_date: "2021-8-1",
+  },
+];
+
 async function initData(db) {
   const { models } = db;
   try {
@@ -67,6 +91,10 @@ async function initData(db) {
       });
 
       await cartItem.save();
+    }
+
+    for (var coupon of coupons) {
+      await models.coupon.create(coupon);
     }
   } catch (e) {
     console.log(e);
