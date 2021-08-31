@@ -6,12 +6,12 @@ const {
   getUserCartId,
 } = require("../middleware/cart.middleware");
 
-router.get("/", async (req, res) => {
+router.get("/", getUserCartId, async (req, res) => {
   try {
-    let items = await CartService.getCartItems(req.userData.id);
+    let items = await CartService.getCartItems(req.userData.cartId);
     res.status(200).json(items);
   } catch (e) {
-    res.status(e.status).send(e.message);
+    res.status(e.status).json(e.message);
   }
 });
 
@@ -20,7 +20,7 @@ router.delete("/clear", getUserCartId, async (req, res) => {
     await CartService.clearCart(req.userData.cartId);
     res.status(200).send();
   } catch (e) {
-    res.status(e.status).send(e.message);
+    res.status(e.status).json(e.message);
   }
 });
 
@@ -29,7 +29,7 @@ router.delete("/:cartItemId", checkItemOwnership, async (req, res) => {
     await CartService.removeFromCart(req.params.cartItemId);
     res.status(200).send();
   } catch (e) {
-    res.status(e.status).send(e.message);
+    res.status(e.status).json(e.message);
   }
 });
 
@@ -43,7 +43,7 @@ router.post("/", getUserCartId, async (req, res) => {
     );
     res.status(200).json(addedItem);
   } catch (e) {
-    res.status(e.status).send(e.message);
+    res.status(e.status).json(e.message);
   }
 });
 
@@ -52,7 +52,7 @@ router.patch("/:cartItemId", checkItemOwnership, async (req, res) => {
     await CartService.updateCartItem(req.params.cartItemId, req.body.quantity);
     res.status(201).send();
   } catch (e) {
-    res.status(e.status).send(e.message);
+    res.status(e.status).json(e.message);
   }
 });
 

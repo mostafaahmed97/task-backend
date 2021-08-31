@@ -6,18 +6,16 @@ const { models } = require("../database");
  * @param {Number} userId
  * @returns Object
  */
-const getCartItems = async (userId) => {
+const getCartItems = async (cartId) => {
   return new Promise(async (resolve, reject) => {
     try {
-      let data = await models.cart.findOne({
-        where: { userId },
-        include: {
-          model: models.cartitem,
-          include: [models.product],
-        },
+      let items = await models.cartitem.findAll({
+        where: { id: cartId },
+        include: [models.product],
       });
-      resolve(data.cartitems);
+      resolve(items);
     } catch (e) {
+      console.log(e);
       reject({ status: 500, message: e });
     }
   });
@@ -35,17 +33,18 @@ const addToCart = (cartId, productId) => {
   return new Promise(async (resolve, reject) => {
     try {
       let product = await models.product.findOne({ where: { id: productId } });
-      if (!product) throw { status: 404, message: "Product not found" };
+      if (!product)
+        throw { status: 404, message: { error: "Product not found" } };
 
       if (await models.cartitem.findOne({ where: { cartId, productId } }))
-        throw { status: 403, message: "Product already in cart" };
+        throw { status: 403, message: { error: "Product already in cart" } };
 
       let newCartItem = await models.cartitem.create({ cartId, productId });
       newCartItem.setDataValue("product", product);
       resolve(newCartItem);
     } catch (e) {
       console.log(e);
-      reject({ status: e.status, message: e });
+      reject({ status: e.status, message: e.message });
     }
   });
 };
@@ -76,7 +75,7 @@ const updateCartItem = (cartItemId, quantity) => {
   return new Promise(async (resolve, reject) => {
     try {
       if (quantity < 1 || !quantity)
-        throw { status: 500, message: "Invalid quantity" };
+        throw { status: 500, message: { error: "Invalid quantity" } };
 
       let cartItem = await models.cartitem.findOne({
         where: { id: cartItemId },
@@ -84,7 +83,7 @@ const updateCartItem = (cartItemId, quantity) => {
       });
 
       if (quantity > cartItem.product.available_quantity)
-        throw { status: 500, message: "Invalid quantity" };
+        throw { status: 500, message: { error: "Invalid quantity" } };
 
       await cartItem.update({ quantity });
       resolve();
