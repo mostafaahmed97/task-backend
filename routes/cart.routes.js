@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.delete("/all", getUserCartId, async (req, res) => {
+router.delete("/clear", getUserCartId, async (req, res) => {
   try {
     await CartService.clearCart(req.userData.cartId);
     res.status(200).send();
@@ -34,8 +34,17 @@ router.delete("/:cartItemId", checkItemOwnership, async (req, res) => {
 });
 
 router.post("/", getUserCartId, async (req, res) => {
-  console.log(req.userData);
-  res.status(200).json();
+  try {
+    if (!req.body.productId)
+      throw { status: 400, message: "Cannot add to cart" };
+    let addedProduct = await CartService.addToCart(
+      req.userData.cartId,
+      req.body.productId
+    );
+    res.status(200).json(addedProduct);
+  } catch (e) {
+    res.status(e.status).send(e.message);
+  }
 });
 
 module.exports = router;
