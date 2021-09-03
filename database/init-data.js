@@ -20,21 +20,21 @@ const initProducts = [
     name: "Headphones",
     description: "Quality closed back headphones",
     available_quantity: 14,
-    img: "",
+    img: "headphone.png",
     price: 1750,
   },
   {
     name: "Bass Guitar",
     description: "Plays groovy basslines",
     available_quantity: 25,
-    img: "",
+    img: "bass.jpg",
     price: 1900,
   },
   {
     name: "Audio Interface",
     description: "Record your greatest sounds",
     available_quantity: 5,
-    img: "",
+    img: "interface.jpg",
     price: 1950,
   },
 ];
@@ -60,7 +60,7 @@ const coupons = [
     code: "SCHOOLBREAK",
     type: "percent",
     amount: 15,
-    start_date: "2021-9-15",
+    start_date: "2021-9-1",
     end_date: "2021-10-1",
   },
   {

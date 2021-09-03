@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
+const path = require("path");
 const db = require("./database");
 const initData = require("./database/init-data");
 const app = express();
@@ -11,6 +12,7 @@ app.use(cors());
 app.use(morgan("common"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use("/media", express.static(path.resolve("media")));
 app.use("/api", apiRoutes);
 
 async function init() {

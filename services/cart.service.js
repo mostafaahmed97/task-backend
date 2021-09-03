@@ -9,11 +9,17 @@ const { models } = require("../database");
 const getCartItems = async (cartId) => {
   return new Promise(async (resolve, reject) => {
     try {
-      let items = await models.cartitem.findAll({
+      let cartContent = await models.cart.findOne({
         where: { id: cartId },
-        include: [models.product],
+        include: [
+          models.coupon,
+          {
+            model: models.cartitem,
+            include: models.product,
+          },
+        ],
       });
-      resolve(items);
+      resolve(cartContent);
     } catch (e) {
       console.log(e);
       reject({ status: 500, message: e });

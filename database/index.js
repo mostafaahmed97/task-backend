@@ -13,18 +13,23 @@ const modelDefiners = [
 ];
 
 // Initializes sequelize instace
-const db = new Sequelize("task-db", "root", "", {
-  host: "localhost",
-  dialect: "mysql",
-  operatorAliases: false,
-  logging: false,
-  pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 1000,
-  },
-});
+const db = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USERNAME,
+  process.env.DB_PASS,
+  {
+    host: process.env.DB_HOST,
+    dialect: "mysql",
+    operatorAliases: false,
+    logging: false,
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 1000,
+    },
+  }
+);
 
 // Initiliaze the models
 for (var modelDefiner of modelDefiners) {

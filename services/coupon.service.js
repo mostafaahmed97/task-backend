@@ -40,4 +40,16 @@ const apply = async (code, cartId) => {
   });
 };
 
-module.exports = { checkValid, apply };
+const remove = async (cartId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let cart = await models.cart.findOne({ where: { id: cartId } });
+      cart.couponId = null;
+      await cart.save();
+      resolve();
+    } catch (e) {
+      reject({ status: e.status, message: e.message });
+    }
+  });
+};
+module.exports = { checkValid, apply, remove };

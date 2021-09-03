@@ -24,4 +24,13 @@ router.post("/apply", getUserCartId, async (req, res) => {
   }
 });
 
+router.delete("/remove", getUserCartId, async (req, res) => {
+  try {
+    await CouponService.remove(req.userData.cartId);
+    res.status(201).json();
+  } catch (e) {
+    res.status(e.status).json(e.message);
+  }
+});
+
 module.exports = router;

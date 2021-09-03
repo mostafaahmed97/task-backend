@@ -25,6 +25,11 @@ module.exports = (db) => {
       type: DataTypes.STRING,
       allowNull: true,
       defaultValue: "",
+      get() {
+        let imgName = this.getDataValue("img");
+        let path = process.env.CURRENT_URL + "/media/images/";
+        return path + imgName;
+      },
     },
     price: {
       type: DataTypes.FLOAT,

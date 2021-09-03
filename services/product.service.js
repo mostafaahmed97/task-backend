@@ -1,4 +1,4 @@
-// Coupon business logic
+// Products business logic
 const { models } = require("../database");
 
 const getProducts = () => {
