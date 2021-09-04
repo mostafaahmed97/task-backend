@@ -19,7 +19,13 @@ const db = new Sequelize(
   process.env.DB_PASS,
   {
     host: process.env.DB_HOST,
-    dialect: "mysql",
+    dialect: process.env.DB_DIALECT,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
     operatorAliases: false,
     logging: false,
     pool: {
@@ -30,6 +36,28 @@ const db = new Sequelize(
     },
   }
 );
+
+// const db = new Sequelize(
+//   process.env.DB_NAME,
+//   process.env.DB_USERNAME,
+//   process.env.DB_PASS,
+//   {
+//     host: process.env.DB_HOST,
+//     dialect: process.env.DB_DIALECT,
+//     operatorAliases: false,
+//     logging: false,
+//     ssl: true,
+//     dialectOptions: {
+//       ssl: true,
+//     },
+//     pool: {
+//       max: 5,
+//       min: 0,
+//       acquire: 30000,
+//       idle: 1000,
+//     },
+//   }
+// );
 
 // Initiliaze the models
 for (var modelDefiner of modelDefiners) {
